@@ -11,6 +11,24 @@ para realizarle el estudio. La fecha de realización se completa cuando
 se marca el estudio como realizado.
 
 Para la demostración se usan datos ficticios.
+## Arquitectura del proyecto
+
+![Diagrama de arquitectura](diagrama-arquitectura.drawio.png)
+
+El navegador accede a la aplicación Java en Tomcat mediante
+http://127.0.0.1:8080. El puerto se publica en la dirección local
+para usar la aplicación desde la computadora donde corre Docker.
+
+Compose inicia dos servicios. El servicio `app` ejecuta la aplicación
+y se conecta al servicio `db` mediante JDBC, usando `db:3306`
+dentro de la red interna del proyecto.
+
+MySQL guarda los estudios en el volumen `mysql_datos`, montado
+en `/var/lib/mysql`. Ese volumen conserva los registros al recrear
+los contenedores.
+
+El chequeo de salud comprueba que MySQL responda consultas.
+La aplicación espera ese resultado antes de iniciar.
 
 ## Tecnologías
 
